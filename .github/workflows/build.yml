@@ -32,7 +32,7 @@ jobs:
           ls
           ls out
           tar -cvzf lifecycle-v1+windows.x86-64.tgz out
-          echo '123' > version.txt
+          echo 'LIFECYCLE_VERSION=123' > version.txt
       - uses: actions/upload-artifact@v2
         with:
           name: lifecycle-windows-x86-64
@@ -58,34 +58,29 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: lifecycle-windows-x86-64
-          path: sbom
+          path: lifecycle
       - uses: actions/download-artifact@v2
         with:
           name: version
-          path: version
       - name: Run
         shell: powershell
         env:
           GOOS: windows
           GOARCH: amd64
         run: |
+          ls                    
+          cat .\version.txt >> $env:GITHUB_ENV          
+          echo ${{ env.LIFECYCLE_VERSION }}
+          go env
+          cd lifecycle
           ls
-          cd version
-          ls
-          cd ..
-          Set-Item -Path env:LIFECYCLE_VERSION -Value (Get-Content -Path .\version\version.txt)
-          cat .\version\version.txt >> $env:LIFECYCLE_VERSION2          
-          cd sbom
-          ls
-          tar -xvzf *.tgz
+          tar -xvzf lifecycle-v1+windows.x86-64.tgz
           cd ..
           go env
-          go run main.go -path .\sbom\out\main.exe
-          cd sbom/out
+          go run main.go -path .\lifecycle\out\main.exe
+          cd lifecycle/out
           ls
           tar -zcvf sboms.tar.gz *.json
-          echo ${{ env.LIFECYCLE_VERSION }}
-          echo ${{ env.LIFECYCLE_VERSION2 }}
       - uses: actions/upload-artifact@v2
         with:
           name: sbom-windows-x86-64
