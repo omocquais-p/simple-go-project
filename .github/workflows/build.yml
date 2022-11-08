@@ -64,6 +64,7 @@ jobs:
           name: version
           path: version.txt
       - name: Set env
+        shell: powershell
         run: |
           $env:$LIFECYCLE_VERSION=`cat version.txt`
       - name: Run
