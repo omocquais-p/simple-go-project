@@ -32,10 +32,15 @@ jobs:
           ls
           ls out
           tar -cvzf lifecycle-v1+windows.x86-64.tgz out
+          echo '123' > version.txt
       - uses: actions/upload-artifact@v2
         with:
           name: lifecycle-windows-x86-64
           path: lifecycle-v1+windows.x86-64.tgz
+      - uses: actions/upload-artifact@v2
+        with:
+          name: version
+          path: version.txt
   sbom-windows:
     needs: build-and-publish
     runs-on: windows-2019
@@ -54,6 +59,13 @@ jobs:
         with:
           name: lifecycle-windows-x86-64
           path: sbom
+      - uses: actions/download-artifact@v2
+        with:
+          name: version
+          path: version.txt
+      - name: Set env
+        run: |
+          $env:$LIFECYCLE_VERSION=`cat version.txt`
       - name: Run
         shell: powershell
         env:
@@ -66,10 +78,10 @@ jobs:
           cd ..
           go env
           go run main.go -path .\sbom\out\main.exe
-          cd sbom
+          cd sbom/out
           ls
           tar -zcvf sboms.tar.gz *.json
       - uses: actions/upload-artifact@v2
         with:
           name: sbom-windows-x86-64
-          path: sbom/sboms.tar.gz
+          path: sbom/out/sboms.tar.gz
