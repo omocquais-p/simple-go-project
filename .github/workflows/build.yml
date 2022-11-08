@@ -34,7 +34,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: main-windows-x86-64
-          path: ${{ env.GITHUB_WORKSPACE }}/out/main.exe
+          path: ${GITHUB_WORKSPACE}/out/main.exe
   sbom-windows:
     needs: build-and-publish
     runs-on: windows-2019
