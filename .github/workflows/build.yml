@@ -27,14 +27,14 @@ jobs:
           go env          
           echo "GITHUB_WORKSPACE: ${GITHUB_WORKSPACE}"
           ls
-          mkdir ${GITHUB_WORKSPACE}/out
-          go build -o ${GITHUB_WORKSPACE}/out/main.exe main.go
+          mkdir out
+          go build -o out/main.exe main.go
           ls
-          ls ${GITHUB_WORKSPACE}/out
+          ls out
       - uses: actions/upload-artifact@v2
         with:
           name: main-windows-x86-64
-          path: ${GITHUB_WORKSPACE}/out/main.exe
+          path: out/main.exe
   sbom-windows:
     needs: build-and-publish
     runs-on: windows-2019
