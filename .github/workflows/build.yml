@@ -62,14 +62,17 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: version
+      - name: Set env
+        run: |
+          cat version.txt >> $env:GITHUB_ENV
       - name: Run
         shell: powershell
         env:
           GOOS: windows
           GOARCH: amd64
         run: |
-          ls                    
-          cat version.txt >> $env:GITHUB_ENV
+          ls          
+          dir env:
           Get-ChildItem env:
           cd lifecycle
           ls
