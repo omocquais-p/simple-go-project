@@ -36,7 +36,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: lifecycle-windows-x86-64
-          path: lifecycle-v1+windows.x86-64.tgz
+          path: lifecycle-v123+windows.x86-64.tgz
       - uses: actions/upload-artifact@v2
         with:
           name: version
