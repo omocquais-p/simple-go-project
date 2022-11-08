@@ -55,12 +55,12 @@ jobs:
           path: sbom
       - name: Run
         shell: powershell
+        env:
+          GOOS: windows
+          GOARCH: amd64
         run: |
           cd sbom
-          ls
-          tar -xvzf *windows.x86-64.tgz
+          ls          
           cd ..
-          $env:GOOS=windows
-          $env:GOARCH=amd64
           go env
-          go run main.go -path ${{ env.GITHUB_WORKSPACE }}\sbom\main\main.exe
+          go run main.go -path .\sbom\main.exe
