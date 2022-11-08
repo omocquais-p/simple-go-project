@@ -30,8 +30,8 @@ jobs:
           mkdir out
           go build -o out/main.exe main.go
           ls
-          ls out
-          tar -cvzf lifecycle-v1+windows.x86-64.tgz out
+          ls out          
+          tar -cvzf lifecycle-v123+windows.x86-64.tgz out
           echo 'LIFECYCLE_VERSION=123' > version.txt
       - uses: actions/upload-artifact@v2
         with:
@@ -77,7 +77,7 @@ jobs:
           ls
           $LifecycleDirectory=(Get-Location)
           ls $LifecycleDirectory          
-          tar -xvzf lifecycle-v1+windows.x86-64.tgz
+          tar -xvzf lifecycle-v${{ env.LIFECYCLE_VERSION }}+windows.x86-64.tgz
           cd ..
           go env
           go run main.go -path .\lifecycle\out\main.exe
