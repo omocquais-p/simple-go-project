@@ -69,7 +69,7 @@ jobs:
           GOOS: windows
           GOARCH: amd64
         run: |          
-          cat version.txt >> $env:LIFECYCLE_VERSION
+          Set-Item -Path env:LIFECYCLE_VERSION -Value (Get-Content -Path .\version.txt)          
           cd sbom
           ls
           tar -xvzf *.tgz
