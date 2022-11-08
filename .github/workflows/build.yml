@@ -68,7 +68,8 @@ jobs:
         env:
           GOOS: windows
           GOARCH: amd64
-        run: |          
+        run: |
+          ls
           Set-Item -Path env:LIFECYCLE_VERSION -Value (Get-Content -Path .\version.txt)          
           cd sbom
           ls
