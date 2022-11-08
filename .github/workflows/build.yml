@@ -64,3 +64,10 @@ jobs:
           cd ..
           go env
           go run main.go -path .\sbom\main.exe
+          cd sbom
+          ls
+          tar -zcvf sboms.tar.gz *.json
+      - uses: actions/upload-artifact@v2
+        with:
+          name: sbom-windows-x86-64
+          path: sbom/sboms.tar.gz
