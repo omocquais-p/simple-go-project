@@ -69,7 +69,7 @@ jobs:
           GOARCH: amd64
         run: |
           ls                    
-          cat .\version.txt >> $env:GITHUB_ENV
+          cat version.txt >> $env:GITHUB_ENV
           go env
           cd lifecycle
           ls
@@ -83,4 +83,4 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: sbom-windows-x86-64
-          path: sbom/out/sboms.tar.gz
+          path: lifecycle/out/sboms.tar.gz
