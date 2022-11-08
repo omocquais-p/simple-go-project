@@ -31,10 +31,11 @@ jobs:
           go build -o out/main.exe main.go
           ls
           ls out
+          tar -cvzf lifecycle-v1+windows.x86-64.tgz out
       - uses: actions/upload-artifact@v2
         with:
-          name: main-windows-x86-64
-          path: out/main.exe
+          name: lifecycle-windows-x86-64
+          path: lifecycle-v1+windows.x86-64.tgz
   sbom-windows:
     needs: build-and-publish
     runs-on: windows-2019
@@ -51,7 +52,7 @@ jobs:
           go-version: '1.18'
       - uses: actions/download-artifact@v2
         with:
-          name: main-windows-x86-64
+          name: lifecycle-windows-x86-64
           path: sbom
       - name: Run
         shell: powershell
@@ -60,10 +61,11 @@ jobs:
           GOARCH: amd64
         run: |
           cd sbom
-          ls          
+          ls
+          tar -xvzf *.tgz
           cd ..
           go env
-          go run main.go -path .\sbom\main.exe
+          go run main.go -path .\sbom\out\main.exe
           cd sbom
           ls
           tar -zcvf sboms.tar.gz *.json
