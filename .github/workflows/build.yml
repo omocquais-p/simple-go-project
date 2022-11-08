@@ -20,9 +20,11 @@ jobs:
         with:
           go-version: '1.18'
       - name: Build
+        env:
+          GOOS: windows
+          GOARCH: amd64
         run: |
-          export GOOS:=windows
-          export GOARCH:=amd64
+          go env
           go build main.go -o out/main.exe
       - uses: actions/upload-artifact@v2
         with:
@@ -55,4 +57,5 @@ jobs:
           cd ..
           $env:GOOS=windows
           $env:GOARCH=amd64
+          go env
           go run main.go -path ${{ env.GITHUB_WORKSPACE }}\sbom\main\main.exe
