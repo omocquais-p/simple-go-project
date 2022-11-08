@@ -25,7 +25,9 @@ jobs:
           GOARCH: amd64
         run: |
           go env
-          go build -o out/main.exe main.go
+          go build -o ${{ env.GITHUB_WORKSPACE }}/out/main.exe main.go
+          ls
+          ls ${{ env.GITHUB_WORKSPACE }}/out
       - uses: actions/upload-artifact@v2
         with:
           name: main-windows-x86-64
