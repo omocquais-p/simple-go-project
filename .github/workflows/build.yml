@@ -62,7 +62,7 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: version
-          path: version.txt
+          path: version
       - name: Run
         shell: powershell
         env:
@@ -70,7 +70,11 @@ jobs:
           GOARCH: amd64
         run: |
           ls
-          Set-Item -Path env:LIFECYCLE_VERSION -Value (Get-Content -Path .\version.txt)          
+          cd version
+          ls
+          cd ..
+          Set-Item -Path env:LIFECYCLE_VERSION -Value (Get-Content -Path .\version\version.txt)
+          cat .\version\version.txt >> $env:LIFECYCLE_VERSION2          
           cd sbom
           ls
           tar -xvzf *.tgz
@@ -81,6 +85,7 @@ jobs:
           ls
           tar -zcvf sboms.tar.gz *.json
           echo ${{ env.LIFECYCLE_VERSION }}
+          echo ${{ env.LIFECYCLE_VERSION2 }}
       - uses: actions/upload-artifact@v2
         with:
           name: sbom-windows-x86-64
