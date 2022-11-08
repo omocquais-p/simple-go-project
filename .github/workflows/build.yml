@@ -24,10 +24,13 @@ jobs:
           GOOS: windows
           GOARCH: amd64
         run: |
-          go env
-          go build -o ${{ env.GITHUB_WORKSPACE }}/out/main.exe main.go
+          go env          
+          echo "GITHUB_WORKSPACE: ${GITHUB_WORKSPACE}"
           ls
-          ls ${{ env.GITHUB_WORKSPACE }}/out
+          mkdir ${GITHUB_WORKSPACE}/out
+          go build -o ${GITHUB_WORKSPACE}/out/main.exe main.go
+          ls
+          ls ${GITHUB_WORKSPACE}/out
       - uses: actions/upload-artifact@v2
         with:
           name: main-windows-x86-64
