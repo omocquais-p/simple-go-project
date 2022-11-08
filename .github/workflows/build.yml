@@ -73,9 +73,10 @@ jobs:
         run: |
           ls          
           dir env:
-          Get-ChildItem env:
           cd lifecycle
           ls
+          $LifecycleDirectory=(Get-Location)
+          ls $LifecycleDirectory          
           tar -xvzf lifecycle-v1+windows.x86-64.tgz
           cd ..
           go env
