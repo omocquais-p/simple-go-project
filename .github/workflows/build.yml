@@ -70,7 +70,7 @@ jobs:
         run: |
           ls                    
           cat version.txt >> $env:GITHUB_ENV
-          go env
+          Get-ChildItem env:
           cd lifecycle
           ls
           tar -xvzf lifecycle-v1+windows.x86-64.tgz
