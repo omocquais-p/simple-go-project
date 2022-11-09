@@ -70,7 +70,9 @@ jobs:
         env:
           GOOS: windows
           GOARCH: amd64
-          ARCHIVE_PATH: .\lifecycle\lifecycle\lifecycle-v${{ env.LIFECYCLE_VERSION }}+windows.x86-64.tgz
+          PACKAGER: tools\packager\main.go
+          INPUT_DIR: lifecycle\lifecycle
+          ARCHIVE_PATH: lifecycle\lifecycle\lifecycle-v${{ env.LIFECYCLE_VERSION }}+windows.x86-64.tgz
         run: |
           ls          
           dir env:
@@ -85,6 +87,12 @@ jobs:
           cd lifecycle/out
           ls
           tar -zcvf sboms.tar.gz *.json
+          
+          $CurrentDirectory=(Get-Location)
+          
+          ls $CurrentDirectory\${{ env.INPUT_DIR }}          
+          ls $CurrentDirectory\${{ env.ARCHIVE_PATH }}
+
       - uses: actions/upload-artifact@v2
         with:
           name: sbom-windows-x86-64
