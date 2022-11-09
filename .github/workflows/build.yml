@@ -75,8 +75,7 @@ jobs:
           ARCHIVE_PATH: lifecycle\lifecycle\lifecycle-v${{ env.LIFECYCLE_VERSION }}+windows.x86-64.tgz
         run: |
           $CurrentDirectory=(Get-Location)          
-          ls $CurrentDirectory\${{ env.INPUT_DIR }}          
-          ls $CurrentDirectory\${{ env.ARCHIVE_PATH }}
+          
           ls          
           dir env:
           cd lifecycle
@@ -85,6 +84,10 @@ jobs:
           ls $LifecycleDirectory          
           tar -xvzf lifecycle-v${{ env.LIFECYCLE_VERSION }}+windows.x86-64.tgz
           cd ..
+          
+          ls $CurrentDirectory\${{ env.INPUT_DIR }}          
+          ls $CurrentDirectory\${{ env.ARCHIVE_PATH }}
+          
           go env
           go run main.go -path .\lifecycle\out\main.exe
           cd lifecycle/out
