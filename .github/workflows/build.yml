@@ -71,8 +71,8 @@ jobs:
           GOOS: windows
           GOARCH: amd64
           PACKAGER: tools\packager\main.go
-          INPUT_DIR: lifecycle\lifecycle
-          ARCHIVE_PATH: lifecycle\lifecycle\lifecycle-v${{ env.LIFECYCLE_VERSION }}+windows.x86-64.tgz
+          INPUT_DIR: lifecycle\out
+          ARCHIVE_PATH: lifecycle\out\lifecycle-v${{ env.LIFECYCLE_VERSION }}+windows.x86-64.tgz
         run: |
           $CurrentDirectory=(Get-Location)          
           
