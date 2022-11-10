@@ -1,5 +1,4 @@
 FROM golang:1.18-nanoserver-1809
-WORKDIR C:\app
 COPY lifecycle/out .
 RUN dir
-ENTRYPOINT ["C:\app\main.exe", "-path", "C:\app\main.exe"]
+ENTRYPOINT ["C:\go\main.exe", "-path", "C:\go\main.exe"]
