@@ -59,7 +59,15 @@ jobs:
         run: |
           ls
           ls lifecycle
-#          docker build -f Dockerfile.windows --tag sbom-generator-win --compress --cache-from=sbom-generator-win .
+          $CurrentDirectory=(Get-Location)
+          cd lifecycle
+          ls
+          $LifecycleDirectory=(Get-Location)
+          ls $LifecycleDirectory
+          tar -xvzf lifecycle-v${{ env.LIFECYCLE_VERSION }}+windows.x86-64.tgz
+          ls
+          cd ..
+          docker build -f Dockerfile.windows --tag sbom-generator-win --compress --cache-from=sbom-generator-win .
 
 #  sbom-windows:
 #    needs: build-and-publish
