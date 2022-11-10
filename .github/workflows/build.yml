@@ -15,32 +15,32 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0 # fetch all history for all branches and tags
-#      - name: Set up go
-#        uses: actions/setup-go@v3
-#        with:
-#          go-version: '1.18'
-#      - name: Build
-#        env:
-#          GOOS: windows
-#          GOARCH: amd64
-#        run: |
-#          go env
-#          echo "GITHUB_WORKSPACE: ${GITHUB_WORKSPACE}"
-#          ls
-#          mkdir out
-#          go build -o out/main.exe main.go
-#          ls
-#          ls out
-#          tar -cvzf lifecycle-v123+windows.x86-64.tgz out
-#          echo 'LIFECYCLE_VERSION=123' > version.txt
-#      - uses: actions/upload-artifact@v2
-#        with:
-#          name: lifecycle-windows-x86-64
-#          path: lifecycle-v123+windows.x86-64.tgz
-#      - uses: actions/upload-artifact@v2
-#        with:
-#          name: version
-#          path: version.txt
+      - name: Set up go
+        uses: actions/setup-go@v3
+        with:
+          go-version: '1.18'
+      - name: Build
+        env:
+          GOOS: windows
+          GOARCH: amd64
+        run: |
+          go env
+          echo "GITHUB_WORKSPACE: ${GITHUB_WORKSPACE}"
+          ls
+          mkdir out
+          go build -o out/main.exe main.go
+          ls
+          ls out
+          tar -cvzf lifecycle-v123+windows.x86-64.tgz out
+          echo 'LIFECYCLE_VERSION=123' > version.txt
+      - uses: actions/upload-artifact@v2
+        with:
+          name: lifecycle-windows-x86-64
+          path: lifecycle-v123+windows.x86-64.tgz
+      - uses: actions/upload-artifact@v2
+        with:
+          name: version
+          path: version.txt
   build-docker-image:
     needs: build-and-publish
     runs-on: windows-2022
@@ -48,65 +48,72 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0 # fetch all history for all branches and tags
+      - uses: actions/download-artifact@v2
+        with:
+          name: lifecycle-windows-x86-64
+          path: lifecycle
       - name: Build - Docker Windows
         env:
           GOOS: windows
           GOARCH: amd64
         run: |
-          docker build -f Dockerfile.windows --tag sbom-generator-win --compress --cache-from=sbom-generator-win .
-  sbom-windows:
-    needs: build-and-publish
-    runs-on: windows-2019
-    steps:
-      - name: Set git to use LF and symlinks
-        run: |
-          git config --global core.autocrlf false
-          git config --global core.eol lf
-          git config --global core.symlinks true
-      - uses: actions/checkout@v2
-      - name: Set up go
-        uses: actions/setup-go@v3
-        with:
-          go-version: '1.18'
-      - uses: actions/download-artifact@v2
-        with:
-          name: lifecycle-windows-x86-64
-          path: lifecycle
-      - uses: actions/download-artifact@v2
-        with:
-          name: version
-      - name: Set env
-        run: |
-          cat version.txt >> $env:GITHUB_ENV
-      - name: Run
-        shell: powershell
-        env:
-          GOOS: windows
-          GOARCH: amd64
-          PACKAGER: tools\packager\main.go
-          INPUT_DIR: lifecycle\out
-          ARCHIVE_PATH: lifecycle\lifecycle-v${{ env.LIFECYCLE_VERSION }}+windows.x86-64.tgz
-        run: |
-          $CurrentDirectory=(Get-Location)          
-          
-          ls          
-          dir env:
-          cd lifecycle
           ls
-          $LifecycleDirectory=(Get-Location)
-          ls $LifecycleDirectory          
-          tar -xvzf lifecycle-v${{ env.LIFECYCLE_VERSION }}+windows.x86-64.tgz
-          cd ..
-          
-          ls $CurrentDirectory\${{ env.INPUT_DIR }}          
-          ls $CurrentDirectory\${{ env.ARCHIVE_PATH }}
-          
-          go env
-          go run main.go -path .\lifecycle\out\main.exe
-          cd lifecycle/out
-          ls
-          tar -zcvf sboms.tar.gz *.json
-      - uses: actions/upload-artifact@v2
-        with:
-          name: sbom-windows-x86-64
-          path: lifecycle/out/sboms.tar.gz
+          ls lifecycle
+#          docker build -f Dockerfile.windows --tag sbom-generator-win --compress --cache-from=sbom-generator-win .
+
+#  sbom-windows:
+#    needs: build-and-publish
+#    runs-on: windows-2019
+#    steps:
+#      - name: Set git to use LF and symlinks
+#        run: |
+#          git config --global core.autocrlf false
+#          git config --global core.eol lf
+#          git config --global core.symlinks true
+#      - uses: actions/checkout@v2
+#      - name: Set up go
+#        uses: actions/setup-go@v3
+#        with:
+#          go-version: '1.18'
+#      - uses: actions/download-artifact@v2
+#        with:
+#          name: lifecycle-windows-x86-64
+#          path: lifecycle
+#      - uses: actions/download-artifact@v2
+#        with:
+#          name: version
+#      - name: Set env
+#        run: |
+#          cat version.txt >> $env:GITHUB_ENV
+#      - name: Run
+#        shell: powershell
+#        env:
+#          GOOS: windows
+#          GOARCH: amd64
+#          PACKAGER: tools\packager\main.go
+#          INPUT_DIR: lifecycle\out
+#          ARCHIVE_PATH: lifecycle\lifecycle-v${{ env.LIFECYCLE_VERSION }}+windows.x86-64.tgz
+#        run: |
+#          $CurrentDirectory=(Get-Location)
+#
+#          ls
+#          dir env:
+#          cd lifecycle
+#          ls
+#          $LifecycleDirectory=(Get-Location)
+#          ls $LifecycleDirectory
+#          tar -xvzf lifecycle-v${{ env.LIFECYCLE_VERSION }}+windows.x86-64.tgz
+#          cd ..
+#
+#          ls $CurrentDirectory\${{ env.INPUT_DIR }}
+#          ls $CurrentDirectory\${{ env.ARCHIVE_PATH }}
+#
+#          go env
+#          go run main.go -path .\lifecycle\out\main.exe
+#          cd lifecycle/out
+#          ls
+#          tar -zcvf sboms.tar.gz *.json
+#      - uses: actions/upload-artifact@v2
+#        with:
+#          name: sbom-windows-x86-64
+#          path: lifecycle/out/sboms.tar.gz
