@@ -89,7 +89,7 @@ jobs:
           cd ../..
           ls
           ls $AppDirectory
-          docker run -v "${AppDirectory}":"/C/app" sbom-generator-win          
+          docker run -v "${AppDirectory}":"/c/app" sbom-generator-win          
           cd app/out
           ls
 
