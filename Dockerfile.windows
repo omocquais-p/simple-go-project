@@ -1,4 +1,4 @@
 FROM golang:1.18-nanoserver-1809
 COPY lifecycle/out .
-RUN ls
+RUN dir
 RUN main.exe -path ./main.exe
