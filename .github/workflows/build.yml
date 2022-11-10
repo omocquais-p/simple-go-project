@@ -79,6 +79,7 @@ jobs:
           ls
           cd ..
           docker build -f Dockerfile.windows --tag sbom-generator-win --compress --cache-from=sbom-generator-win .
+          docker image inspect sbom-generator-win
           ls          
           cd app
           tar -xvzf lifecycle-v123+windows.x86-64.tgz
@@ -87,7 +88,8 @@ jobs:
           $AppDirectory=(Get-Location)
           cd ../..
           ls
-          docker run -v "${AppDirectory}":"/C/app" --entrypoint "C:\\go\\main.exe" sbom-generator-win "-path=C:\\app\\main.exe"
+          ls $AppDirectory
+          docker run -v "${AppDirectory}":"/C/app" sbom-generator-win          
           cd app/out
           ls
 
