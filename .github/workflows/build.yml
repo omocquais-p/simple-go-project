@@ -87,7 +87,7 @@ jobs:
           $AppDirectory=(Get-Location)
           cd ../..
           ls
-          docker run -v "${AppDirectory}":"/C/app" --entrypoint "C:\\go\\main.exe" sbom-generator-win -path "C:\\app\\main.exe"
+          docker run -v "${AppDirectory}":"/C/app" sbom-generator-win
           cd app/out
           ls
 
