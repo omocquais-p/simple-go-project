@@ -1,2 +1,2 @@
-FROM mcr.microsoft.com/1.18.0-1-windowsservercore-1809-amd64
+FROM 1.18.0-1-windowsservercore-1809-amd64
 RUN go version
