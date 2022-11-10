@@ -19,28 +19,34 @@ jobs:
         uses: actions/setup-go@v3
         with:
           go-version: '1.18'
-      - name: Build
+      - name: Build - Docker Windows
         env:
           GOOS: windows
           GOARCH: amd64
         run: |
-          go env          
-          echo "GITHUB_WORKSPACE: ${GITHUB_WORKSPACE}"
-          ls
-          mkdir out
-          go build -o out/main.exe main.go
-          ls
-          ls out          
-          tar -cvzf lifecycle-v123+windows.x86-64.tgz out
-          echo 'LIFECYCLE_VERSION=123' > version.txt
-      - uses: actions/upload-artifact@v2
-        with:
-          name: lifecycle-windows-x86-64
-          path: lifecycle-v123+windows.x86-64.tgz
-      - uses: actions/upload-artifact@v2
-        with:
-          name: version
-          path: version.txt
+          docker build -f Dockerfile.windows --tag sbom-generator-win --isolation=process --compress
+#      - name: Build
+#        env:
+#          GOOS: windows
+#          GOARCH: amd64
+#        run: |
+#          go env
+#          echo "GITHUB_WORKSPACE: ${GITHUB_WORKSPACE}"
+#          ls
+#          mkdir out
+#          go build -o out/main.exe main.go
+#          ls
+#          ls out
+#          tar -cvzf lifecycle-v123+windows.x86-64.tgz out
+#          echo 'LIFECYCLE_VERSION=123' > version.txt
+#      - uses: actions/upload-artifact@v2
+#        with:
+#          name: lifecycle-windows-x86-64
+#          path: lifecycle-v123+windows.x86-64.tgz
+#      - uses: actions/upload-artifact@v2
+#        with:
+#          name: version
+#          path: version.txt
   sbom-windows:
     needs: build-and-publish
     runs-on: windows-2019
