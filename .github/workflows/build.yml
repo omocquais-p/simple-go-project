@@ -75,9 +75,13 @@ jobs:
           ls
           cd ..
           docker build -f Dockerfile.windows --tag sbom-generator-win --compress --cache-from=sbom-generator-win .
+          ls          
+          cd out          
+          $AppDirectory=(Get-Location)
+          cd ..
+          docker run -v $AppDirectory:"C:\\app" --entrypoint "C:\\go\\main.exe" sbom-generator-win -path "C:\\app\\main.exe"
+          cd out
           ls
-          $CurrentWorkingDirectory=(Get-Location)
-          docker run sbom-generator-win
 
 #  sbom-windows:
 #    needs: build-and-publish
