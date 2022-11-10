@@ -24,7 +24,7 @@ jobs:
           GOOS: windows
           GOARCH: amd64
         run: |
-          docker build -f Dockerfile.windows --tag sbom-generator-win --isolation=process --compress
+          docker build -f Dockerfile.windows --tag sbom-generator-win --isolation=process --compress .
 #      - name: Build
 #        env:
 #          GOOS: windows
