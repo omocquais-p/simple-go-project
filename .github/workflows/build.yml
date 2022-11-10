@@ -75,6 +75,8 @@ jobs:
           ls
           cd ..
           docker build -f Dockerfile.windows --tag sbom-generator-win --compress --cache-from=sbom-generator-win .
+          ls
+          $CurrentWorkingDirectory=(Get-Location)
           docker run sbom-generator-win
 
 #  sbom-windows:
