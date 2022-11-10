@@ -59,6 +59,7 @@ jobs:
           name: lifecycle-windows-x86-64
           path: lifecycle
       - name: Build - Docker Windows
+        shell: powershell
         env:
           GOOS: windows
           GOARCH: amd64
@@ -70,7 +71,7 @@ jobs:
           ls
           $LifecycleDirectory=(Get-Location)
           ls $LifecycleDirectory
-          tar -xvzf lifecycle-v${{ env.LIFECYCLE_VERSION }}+windows.x86-64.tgz
+          tar -xvzf lifecycle-v123+windows.x86-64.tgz
           ls
           cd ..
           docker build -f Dockerfile.windows --tag sbom-generator-win --compress --cache-from=sbom-generator-win .
