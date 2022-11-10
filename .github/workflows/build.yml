@@ -75,6 +75,7 @@ jobs:
           ls
           cd ..
           docker build -f Dockerfile.windows --tag sbom-generator-win --compress --cache-from=sbom-generator-win .
+          docker run sbom-generator-win
 
 #  sbom-windows:
 #    needs: build-and-publish
