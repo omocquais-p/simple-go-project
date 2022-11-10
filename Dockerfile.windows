@@ -1,2 +1,2 @@
-FROM 1.18.0-1-windowsservercore-1809-amd64
+FROM mcr.microsoft.com/oss/go/microsoft/golang:1.19-bullseye
 RUN go version
