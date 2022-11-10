@@ -71,7 +71,6 @@ jobs:
           $LifecycleDirectory=(Get-Location)
           ls $LifecycleDirectory
           tar -xvzf lifecycle-v${{ env.LIFECYCLE_VERSION }}+windows.x86-64.tgz
-          lifecycle-v123+windows.x86-64.tgz
           ls
           cd ..
           docker build -f Dockerfile.windows --tag sbom-generator-win --compress --cache-from=sbom-generator-win .
