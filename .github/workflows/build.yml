@@ -58,6 +58,10 @@ jobs:
         with:
           name: lifecycle-windows-x86-64
           path: lifecycle
+      - uses: actions/download-artifact@v2
+        with:
+          name: lifecycle-windows-x86-64
+          path: app
       - name: Build - Docker Windows
         shell: powershell
         env:
@@ -76,11 +80,15 @@ jobs:
           cd ..
           docker build -f Dockerfile.windows --tag sbom-generator-win --compress --cache-from=sbom-generator-win .
           ls          
-          cd out          
-          $AppDirectory=(Get-Location)
-          cd ..
-          docker run -v $AppDirectory:"C:\\app" --entrypoint "C:\\go\\main.exe" sbom-generator-win -path "C:\\app\\main.exe"
+          cd app
+          tar -xvzf lifecycle-v123+windows.x86-64.tgz
+          ls
           cd out
+          $AppDirectory=(Get-Location)
+          cd ../..
+          ls
+          docker run -v $AppDirectory:"C:\\app" --entrypoint "C:\\go\\main.exe" sbom-generator-win -path "C:\\app\\main.exe"
+          cd app/out
           ls
 
 #  sbom-windows:
