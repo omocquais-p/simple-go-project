@@ -89,10 +89,12 @@ jobs:
           cd ../..
           ls
           ls $AppDirectory
-          echo 'AppDirectory: $AppDirectory'
-          echo 'LifecycleDirectory: $LifecycleDirectory'
+          echo 'AppDirectory: ${AppDirectory}'
+          echo 'LifecycleDirectory: ${LifecycleDirectory}'
+          $VolumeArgs="${AppDirectory}":"/c/app"
           echo 'docker run -v "${AppDirectory}":"/c/app" sbom-generator-win'
-          docker run -v "${AppDirectory}":"/c/app" sbom-generator-win          
+          echo 'docker run -v ${VolumeArgs} sbom-generator-win'
+          docker run -v ${VolumeArgs} sbom-generator-win          
           cd app/out
           ls
 
